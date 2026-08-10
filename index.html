@@ -1178,7 +1178,6 @@ const googleSignIn = async () => {
 
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
-    // Access token ใช้เฉพาะกรณีเรียก Google API จาก Browser โดยตรง
     cachedAccessToken = credential?.accessToken || null;
 
     return {
@@ -1189,6 +1188,14 @@ const googleSignIn = async () => {
   } catch (error) {
 
     console.error('Sign in error:', error);
+
+    // หากพบปัญหาการสลับบัญชีข้ามโดเมน ให้ล้างสถานะล็อกอินเดิมทิ้งก่อน
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.warn("Signout cleanup failed", e);
+    }
+
     throw error;
 
   } finally {
