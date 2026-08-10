@@ -664,12 +664,12 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-// บังคับให้เลือกบัญชีและยืนยันสิทธิ์เพื่อล้าง Session ค้าง ป้องกัน Error 400
+// ✅ แก้ไขจุดสำคัญ: บังคับโดเมน g.swu.ac.th และเลือกบัญชี เพื่อป้องกัน Google 400 Error
 provider.setCustomParameters({
-  prompt: 'select_account consent'
+  hd: 'g.swu.ac.th',
+  prompt: 'select_account'
 });
 
-// URL สำหรับเรียก API ของ Google Apps Script Web App
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyqBS7A1p-K-qIpVwltgvSrs428PQYJQDvwrT_t4UNNOrzH4uxFDliNDmx_ZkBFc05k/exec"; 
 
 let isSigningIn = false;
@@ -683,69 +683,29 @@ let currentTab = '#tabDash';
 let isLoggingIn = false;
 let authReady = false;
 
-/* จำแท็บล่าสุด */
-
 document.addEventListener('click', function(e){
-
-const btn =
-e.target.closest('.nav-link');
-
-if(!btn) return;
-
-const tabId =
-btn.getAttribute('data-bs-target');
-
-currentTab = tabId;
-
-activateTab(tabId);
-
+  const btn = e.target.closest('.nav-link');
+  if(!btn) return;
+  const tabId = btn.getAttribute('data-bs-target');
+  currentTab = tabId;
+  activateTab(tabId);
 });
 
 function switchView(id){
-
   currentView = id;
-
-  document.getElementById(
-    'mainContent'
-  ).style.display =
-  (id === 'mainContent')
-  ? 'block'
-  : 'none';
-
-  document.getElementById(
-    'globalHeader'
-  ).style.display =
-  (id === 'mainContent')
-  ? 'flex'
-  : 'none';
-
+  document.getElementById('mainContent').style.display = (id === 'mainContent') ? 'block' : 'none';
+  document.getElementById('globalHeader').style.display = (id === 'mainContent') ? 'flex' : 'none';
 } 
 
 function fmt(val){
-
-  if(val === null || val === undefined || val === "")
-    return "";
-
+  if(val === null || val === undefined || val === "") return "";
   let str = val.toString().trim().toLowerCase();
-
-  if(str === "true")
-  return '<span style="color:#111827;font-weight:700;">✅ True</span>';
-
-  if(str === "false")
-  return '<span style="color:#111827;font-weight:700;">❌ False</span>';
-
-  if(str === "o")
-    return '<span class="badge-ui badge-o">🏆 O</span>';
-
-  if(str === "s")
-    return '<span class="badge-ui badge-s">✅ S</span>';
-
-  if(str === "u")
-    return '<span class="badge-ui badge-u">❌ U</span>';
-
-  if(str === "upskill")
-    return '<span class="badge-ui badge-upskill">🚀 UpSkill</span>';
-
+  if(str === "true") return '<span style="color:#111827;font-weight:700;">✅ True</span>';
+  if(str === "false") return '<span style="color:#111827;font-weight:700;">❌ False</span>';
+  if(str === "o") return '<span class="badge-ui badge-o">🏆 O</span>';
+  if(str === "s") return '<span class="badge-ui badge-s">✅ S</span>';
+  if(str === "u") return '<span class="badge-ui badge-u">❌ U</span>';
+  if(str === "upskill") return '<span class="badge-ui badge-upskill">🚀 UpSkill</span>';
   return val;
 }
 
@@ -762,14 +722,11 @@ async function loadScore(email){
     const user = auth.currentUser;
     if (!user) throw new Error("No user logged in");
     
-    // ดึง Token จาก Firebase Auth ส่งไปตรวจที่ Backend เพื่อความปลอดภัย
     const idToken = await user.getIdToken();
 
-    // ทำการ fetch ยิง API ข้ามโดเมนไปที่ Google Apps Script
     const response = await fetch(GAS_API_URL, {
       method: 'POST',
       headers: {
-        // ใช้ text/plain เพื่อป้องกันปัญหา CORS Preflight ของฝั่ง Browser
         'Content-Type': 'text/plain;charset=utf-8' 
       },
       body: JSON.stringify({ idToken: idToken })
@@ -803,53 +760,31 @@ async function loadScore(email){
 }
 
 async function handleLogout(){
-
   try {
-
     await logout();
-
     scores = {};
     userData = {};
     currentTab = '#tabDash';
-
     document.getElementById('headerUser').innerHTML = '';
     document.getElementById('scoreContent').innerHTML = '';
     showLoggedOutView();
-
   } catch (err) {
-
     console.error('Logout error:', err);
     showLoginError('ออกจากระบบไม่สำเร็จ กรุณารีเฟรชหน้าแล้วลองอีกครั้ง');
-
   }
-
 }
 
 function refreshCurrentPage(){
-
-  const user =
-    auth.currentUser;
-
+  const user = auth.currentUser;
   if(user){
-
     loadScore(user.email);
-
   }
-
 }
 
 function getR(c,label=null){
-
   if(!scores[c]) return "";
-
-  const header =
-    (label || scores[c].label || '')
-    .toString()
-    .trim();
-
-  if(header === "")
-    return "";
-
+  const header = (label || scores[c].label || '').toString().trim();
+  if(header === "") return "";
   return `
   <div class="data-row">
     <span>${header}</span>
@@ -858,286 +793,104 @@ function getR(c,label=null){
   `;
 }
 
-// =========================
-// เพิ่มส่วนนี้ก่อน renderScores()
-// =========================
-
 function isTab(tab){
-
-  return currentTab === tab
-    ? 'show active'
-    : '';
-
+  return currentTab === tab ? 'show active' : '';
 }
 
 function isBtn(tab){
-
-  return currentTab === tab
-    ? 'active'
-    : '';
-
+  return currentTab === tab ? 'active' : '';
 }
 
 function renderScores(){
-
-document.getElementById('scoreContent').innerHTML = `
-
-<div class="tab-pane fade ${isTab('#tabDash')}" id="tabDash">
-
-<div class="text-center">
-
-<div class="small text-muted" style="font-size:0.8rem;">
-Grade ${window.subjectCode || ''}
-</div>
-
-<div class="big-grade">
-${scores['CT']?.value || '-'}
-</div>
-
-</div>
-
-<div class="status-box">
-
-<h6 class="fw-bold mb-2">
-📊 Class Attendance
-</h6>
-
-${getR('G')}
-${getR('I')}
-${getR('CH')}
-
-</div>
-
-<div class="status-box">
-
-<h6 class="fw-bold mb-2">
-🎯 Grade CLO
-</h6>
-
-${getR('CO')}
-${getR('CP')}
-${getR('CQ')}
-
-</div>
-
-</div>
-
-<!-- CLO1 -->
-
-<div class="tab-pane fade ${isTab('#tab1')}" id="tab1">
-
-<div class="text-center">
-
-<div class="small text-muted" style="font-size:0.8rem;">
-Grade CLO1
-</div>
-
-<div class="big-grade"
-style="font-size:3.5rem;">
-
-${scores['CO']?.value || '-'}
-
-</div>
-
-</div>
-
-<div class="status-box">
-
-<h6 class="fw-bold mb-2">
-📝 Scores
-</h6>
-
-${['J','K','L','M','N','O','P','Q','R','S','T','U']
-.map(c => getR(c))
-.join('')}
-
-<div class="data-row fw-bold total-row">
-
-<span>
-${scores['V']?.label || 'รวม CLO1'}
-</span>
-
-<b>
-${fmt(scores['V']?.value || '-')}
-</b>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- CLO2 -->
-
-<div class="tab-pane fade ${isTab('#tab2')}" id="tab2">
-
-<div class="text-center">
-
-<div class="small text-muted" style="font-size:0.8rem;">
-Grade CLO2
-</div>
-
-<div class="big-grade"
-style="font-size:3.5rem;">
-
-${scores['CP']?.value || '-'}
-</div>
-
-</div>
-
-<div class="status-box">
-
-<h6 class="fw-bold mb-3">
-📝 Scores
-</h6>
-
-${['Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ']
-.map(c => getR(c))
-.join('')}
-
-<div class="data-row fw-bold total-row">
-
-<span>
-${scores['AK']?.label || 'รวม CLO2'}
-</span>
-
-<b>
-${fmt(scores['AK']?.value || '-')}
-</b>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- CLO3 -->
-
-<div class="tab-pane fade ${isTab('#tab3')}" id="tab3">
-
-<div class="text-center">
-
-<div class="small text-muted" style="font-size:0.8rem;">
-Grade CLO3
-</div>
-
-<div class="big-grade"
-style="font-size:3.5rem;">
-
-${scores['CQ']?.value || '-'}
-</div>
-
-</div>
-
-<div class="status-box">
-
-<h6 class="fw-bold mb-3">
-📝 Scores
-</h6>
-
-${['AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY']
-.map(c => getR(c))
-.join('')}
-
-<div class="data-row fw-bold total-row">
-
-<span>
-${scores['AZ']?.label || 'รวม CLO3'}
-</span>
-
-<b>
-${fmt(scores['AZ']?.value || '-')}
-</b>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-activateTab(currentTab || '#tabDash');
-
+  document.getElementById('scoreContent').innerHTML = `
+  <div class="tab-pane fade ${isTab('#tabDash')}" id="tabDash">
+    <div class="text-center">
+      <div class="small text-muted" style="font-size:0.8rem;">Grade ${window.subjectCode || ''}</div>
+      <div class="big-grade">${scores['CT']?.value || '-'}</div>
+    </div>
+    <div class="status-box">
+      <h6 class="fw-bold mb-2">📊 Class Attendance</h6>
+      ${getR('G')}
+      ${getR('I')}
+      ${getR('CH')}
+    </div>
+    <div class="status-box">
+      <h6 class="fw-bold mb-2">🎯 Grade CLO</h6>
+      ${getR('CO')}
+      ${getR('CP')}
+      ${getR('CQ')}
+    </div>
+  </div>
+
+  <div class="tab-pane fade ${isTab('#tab1')}" id="tab1">
+    <div class="text-center">
+      <div class="small text-muted" style="font-size:0.8rem;">Grade CLO1</div>
+      <div class="big-grade" style="font-size:3.5rem;">${scores['CO']?.value || '-'}</div>
+    </div>
+    <div class="status-box">
+      <h6 class="fw-bold mb-2">📝 Scores</h6>
+      ${['J','K','L','M','N','O','P','Q','R','S','T','U'].map(c => getR(c)).join('')}
+      <div class="data-row fw-bold total-row">
+        <span>${scores['V']?.label || 'รวม CLO1'}</span>
+        <b>${fmt(scores['V']?.value || '-')}</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane fade ${isTab('#tab2')}" id="tab2">
+    <div class="text-center">
+      <div class="small text-muted" style="font-size:0.8rem;">Grade CLO2</div>
+      <div class="big-grade" style="font-size:3.5rem;">${scores['CP']?.value || '-'}</div>
+    </div>
+    <div class="status-box">
+      <h6 class="fw-bold mb-3">📝 Scores</h6>
+      ${['Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ'].map(c => getR(c)).join('')}
+      <div class="data-row fw-bold total-row">
+        <span>${scores['AK']?.label || 'รวม CLO2'}</span>
+        <b>${fmt(scores['AK']?.value || '-')}</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane fade ${isTab('#tab3')}" id="tab3">
+    <div class="text-center">
+      <div class="small text-muted" style="font-size:0.8rem;">Grade CLO3</div>
+      <div class="big-grade" style="font-size:3.5rem;">${scores['CQ']?.value || '-'}</div>
+    </div>
+    <div class="status-box">
+      <h6 class="fw-bold mb-3">📝 Scores</h6>
+      ${['AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY'].map(c => getR(c)).join('')}
+      <div class="data-row fw-bold total-row">
+        <span>${scores['AZ']?.label || 'รวม CLO3'}</span>
+        <b>${fmt(scores['AZ']?.value || '-')}</b>
+      </div>
+    </div>
+  </div>
+  `;
+  activateTab(currentTab || '#tabDash');
 }
 
 function activateTab(tabId){
-
-  document
-  .querySelectorAll('.tab-pane')
-  .forEach(el => {
-
-    el.classList.remove(
-      'show',
-      'active'
-    );
-
-  });
-
-  document
-  .querySelectorAll('.nav-link')
-  .forEach(el => {
-
-    el.classList.remove('active');
-
-  });
-
-  const tab =
-    document.querySelector(tabId);
-
-  if(tab){
-
-    tab.classList.add(
-      'show',
-      'active'
-    );
-
-  }
-
-  const btn =
-    document.querySelector(
-      `[data-bs-target="${tabId}"]`
-    );
-
-  if(btn){
-
-    btn.classList.add('active');
-
-  }
-
+  document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('show', 'active'));
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  const tab = document.querySelector(tabId);
+  if(tab) tab.classList.add('show', 'active');
+  const btn = document.querySelector(`[data-bs-target="${tabId}"]`);
+  if(btn) btn.classList.add('active');
 }
 
 function showLoginError(message){
-
-  const box =
-    document.getElementById("loginError");
-
-  box.innerHTML =
-  `
-  <div style="display:flex;gap:10px;align-items:flex-start;">
-        <div style="margin-top:4px;">
-          ${message}
-        </div>
-  </div>
-  `;
-
+  const box = document.getElementById("loginError");
+  box.innerHTML = `<div style="display:flex;gap:10px;align-items:flex-start;"><div style="margin-top:4px;">${message}</div></div>`;
   box.style.display = "block";
-
 }
 
 function hideLoginError(){
-
   document.getElementById("loginError").style.display="none";
-
 }
 
-const initAuth = (
-  onAuthSuccess,
-  onAuthFailure
-) => {
-
+const initAuth = (onAuthSuccess, onAuthFailure) => {
   return onAuthStateChanged(auth, async user => {
-
     isSigningIn = false;
     isLoggingIn = false;
 
@@ -1148,12 +901,9 @@ const initAuth = (
     }
 
     const email = (user.email || '').trim().toLowerCase();
-
     if (!email.endsWith('@g.swu.ac.th')) {
-
       await logout();
       showLoginError('กรุณาเข้าสู่ระบบด้วยบัญชี @g.swu.ac.th เท่านั้น');
-
       if (onAuthFailure) onAuthFailure();
       return;
     }
@@ -1161,72 +911,37 @@ const initAuth = (
     if (onAuthSuccess) {
       onAuthSuccess(user, cachedAccessToken);
     }
-
   });
-
 };
 
 const googleSignIn = async () => {
-
   try {
-
     isSigningIn = true;
-
     const result = await signInWithPopup(auth, provider);
-
-    console.log('Signed in as:', result.user.email);
-
     const credential = GoogleAuthProvider.credentialFromResult(result);
-
     cachedAccessToken = credential?.accessToken || null;
-
-    return {
-      user: result.user,
-      accessToken: cachedAccessToken
-    };
-
+    return { user: result.user, accessToken: cachedAccessToken };
   } catch (error) {
-
     console.error('Sign in error:', error);
-
-    // หากพบปัญหาการสลับบัญชีข้ามโดเมน ให้ล้างสถานะล็อกอินเดิมทิ้งก่อน
-    try {
-      await signOut(auth);
-    } catch (e) {
-      console.warn("Signout cleanup failed", e);
-    }
-
     throw error;
-
   } finally {
-
     isSigningIn = false;
-
   }
-
 };
 
-const getAccessToken = async () => cachedAccessToken;
-
 const logout = async () => {
-
   await signOut(auth);
   cachedAccessToken = null;
-
 };
 
 function showLoggedOutView(){
-
   document.getElementById('mainContent').style.display = 'none';
   document.getElementById('globalHeader').style.display = 'none';
   document.getElementById('loginView').style.display = 'flex';
-
 }
 
 async function loginGoogle(){
-
   if (isLoggingIn || isSigningIn) return;
-
   if (!authReady) {
     showLoginError('ระบบเข้าสู่ระบบยังไม่พร้อม กรุณารอสักครู่แล้วลองใหม่');
     return;
@@ -1236,10 +951,7 @@ async function loginGoogle(){
   hideLoginError();
 
   try {
-    // ล้างสถานะค้างเก่าก่อนทุกครั้ง เพื่อป้องกัน Error 400
-    await signOut(auth);
-    
-    const result = await signInWithPopup(auth, provider);
+    const result = await googleSignIn();
     const email = (result?.user?.email || '').trim().toLowerCase();
 
     if (!email.endsWith('@g.swu.ac.th')) {
@@ -1247,80 +959,44 @@ async function loginGoogle(){
       showLoginError('กรุณาเข้าสู่ระบบด้วยบัญชี @g.swu.ac.th เท่านั้น');
       return;
     }
-
   } catch (err) {
-    console.error('Login error detail:', err);
-
     if (err.code === 'auth/popup-closed-by-user') {
       showLoginError('หน้าต่างเข้าสู่ระบบถูกปิด กรุณาลองใหม่');
-
     } else if (err.code === 'auth/popup-blocked') {
       showLoginError('เบราว์เซอร์บล็อก Pop-up กรุณาอนุญาต Pop-up แล้วลองใหม่');
-
-    } else if (err.code === 'auth/cancelled-popup-request') {
-      showLoginError('มีคำขอเข้าสู่ระบบซ้ำ กรุณารอสักครู่แล้วลองใหม่');
-
-    } else if (err.code === 'auth/network-request-failed') {
-      showLoginError('ไม่สามารถเชื่อมต่อเครือข่ายได้ กรุณาตรวจสอบอินเทอร์เน็ต');
-
     } else {
       showLoginError(`เข้าสู่ระบบไม่สำเร็จ: ${err.message || err.code || 'Unknown error'}`);
     }
-
   } finally {
-
     isLoggingIn = false;
-
   }
-
 }
 
 async function initializeAuth(){
-
   try {
-
-    // เทียบเท่า firebase.auth.Auth.Persistence.NONE
-    // สถานะ Login จะอยู่เฉพาะในหน่วยความจำและหายเมื่อ Refresh
     await setPersistence(auth, inMemoryPersistence);
-
-    // ล้างสถานะ Login เดิมที่อาจเหลือจากเวอร์ชัน compat
-    if (auth.currentUser) {
-      await logout();
-    }
-
     authReady = true;
 
     unsubscribeAuth = initAuth(
       (user) => {
-
         document.getElementById('loginView').style.display = 'none';
         loadScore(user.email);
-
       },
       () => {
-
         showLoggedOutView();
-
       }
     );
-
   } catch (err) {
-
     authReady = false;
     console.error('Firebase initialization error:', err);
     showLoginError(`ไม่สามารถเริ่มระบบเข้าสู่ระบบได้: ${err.message || err.code || 'Unknown error'}`);
-
   }
-
 }
 
-// ฟังก์ชันใน ES module จะไม่ถูกเพิ่มลง window อัตโนมัติ
-// จึง expose เฉพาะฟังก์ชันที่ถูกเรียกจาก onclick ใน HTML
 Object.assign(window, {
   loginGoogle,    
   handleLogout,
-  refreshCurrentPage,
-  getAccessToken
+  refreshCurrentPage
 });
 
 initializeAuth();
