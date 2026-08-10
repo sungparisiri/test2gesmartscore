@@ -1225,7 +1225,6 @@ function showLoggedOutView(){
 
 async function loginGoogle(){
 
-  // ป้องกันการกด Login ซ้ำ
   if (isLoggingIn || isSigningIn) return;
 
   if (!authReady) {
@@ -1237,20 +1236,20 @@ async function loginGoogle(){
   hideLoginError();
 
   try {
-
-    const result = await googleSignIn();
+    // ล้างสถานะค้างเก่าก่อนทุกครั้ง เพื่อป้องกัน Error 400
+    await signOut(auth);
+    
+    const result = await signInWithPopup(auth, provider);
     const email = (result?.user?.email || '').trim().toLowerCase();
 
-    // ตรวจสอบอีกครั้งก่อนอนุญาตให้ใช้งาน
     if (!email.endsWith('@g.swu.ac.th')) {
-
       await logout();
       showLoginError('กรุณาเข้าสู่ระบบด้วยบัญชี @g.swu.ac.th เท่านั้น');
       return;
-
     }
 
   } catch (err) {
+    console.error('Login error detail:', err);
 
     if (err.code === 'auth/popup-closed-by-user') {
       showLoginError('หน้าต่างเข้าสู่ระบบถูกปิด กรุณาลองใหม่');
