@@ -666,7 +666,8 @@ const provider = new GoogleAuthProvider();
 
 // บังคับให้ Google แสดงหน้าเลือกบัญชีทุกครั้ง
 provider.setCustomParameters({
-  prompt: 'select_account'
+  prompt: 'select_account',
+  authuser: '-1'
 });
 
 // URL สำหรับเรียก API ของ Google Apps Script Web App
