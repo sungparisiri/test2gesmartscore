@@ -664,10 +664,9 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-// บังคับให้ Google แสดงหน้าเลือกบัญชีทุกครั้ง
+// บังคับให้เลือกบัญชีและยืนยันสิทธิ์เพื่อล้าง Session ค้าง ป้องกัน Error 400
 provider.setCustomParameters({
-  prompt: 'select_account',
-  authuser: '-1'
+  prompt: 'select_account consent'
 });
 
 // URL สำหรับเรียก API ของ Google Apps Script Web App
