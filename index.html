@@ -646,8 +646,8 @@ import {
   onAuthStateChanged,
   signOut,
   setPersistence,
-  inMemoryPersistence
-} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  browserLocalPersistence // 👈 เปลี่ยนจาก inMemoryPersistence เป็นตัวนี้
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1KJD625lxgaK9wKrirrfhOfQ140vPqPM",
@@ -974,7 +974,8 @@ async function loginGoogle(){
 
 async function initializeAuth(){
   try {
-    await setPersistence(auth, inMemoryPersistence);
+    // ใช้ browserLocalPersistence เพื่อป้องกันปัญหา Storage ถูกบล็อก
+    await setPersistence(auth, browserLocalPersistence);
     authReady = true;
 
     unsubscribeAuth = initAuth(
