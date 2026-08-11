@@ -261,7 +261,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // บังคับให้ Google แสดงหน้าเลือกบัญชีทุกครั้ง
-provider.setCustomParameters({hd:'g.swu.ac.th',prompt:'select_account'});
+provider.setCustomParameters({prompt:'select_account'});
 
 // URL สำหรับเรียก API ของ Google Apps Script Web App
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyqBS7A1p-K-qIpVwltgvSrs428PQYJQDvwrT_t4UNNOrzH4uxFDliNDmx_ZkBFc05k/exec";
