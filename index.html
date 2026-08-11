@@ -11,8 +11,14 @@
 LOGIN PAGE
 ========================= */
 
-#loginView{
-  min-height:100vh; display:flex; justify-content:center; align-items:center; background:#edf4f6;
+#loginView {
+  height: 100vh;         /* สำรองไว้สำหรับเบราว์เซอร์เก่า */
+  height: 100dvh;        /* 🌟 ปรับให้พอดีจอมือถือเป๊ะๆ (หักลบแถบ URL ออก) */
+  overflow: hidden;      /* 🌟 บังคับซ่อน ScrollBar เฉพาะหน้านี้ */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  background: #edf4f6;
 }
 
 .login-card{
@@ -60,8 +66,13 @@ LOGIN PAGE
   --green:#6cae9e; --blue:#8bb7dc; --dark:#49616a;
 }
 
-body{
-  font-family:'Sarabun',sans-serif; background:linear-gradient(135deg,#f3fffb,#eef7ff); min-height:100vh; overflow-x:hidden;
+body {
+  font-family: 'Sarabun', sans-serif; 
+  background: linear-gradient(135deg, #f3fffb, #eef7ff); 
+  min-height: 100vh; 
+  min-height: 100dvh;    /* 🌟 เปลี่ยนมาใช้ dvh เพื่อไม่ให้พื้นหลังดันจอจนเกิด Scrollbar */
+  overflow-x: hidden;
+  margin: 0;             /* ล้างขอบเพื่อให้แนบสนิทกับหน้าจอ */
 }
 
 .google-btn:hover{
@@ -144,9 +155,19 @@ body{
   display:none;
 }
 
-.logout-btn{
-  border:none; border-radius:18px; padding:4px 10px; font-size:0.8rem; font-weight:700;
-  background:linear-gradient(135deg,#6cae9e,#8bb7dc); color:white; transition:0.2s;
+.logout-btn {
+  border:none; 
+  border-radius:18px; 
+  padding:4px 10px; 
+  font-size:0.8rem; 
+  font-weight:700;
+  background:linear-gradient(135deg,#6cae9e,#8bb7dc); 
+  color:white; 
+  transition:0.2s;
+
+  /* 🌟 เพิ่ม 2 บรรทัดนี้เพื่อไม่ให้ตัวหนังสือตกลงมาเป็น 2 บรรทัด */
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .logout-btn:hover{
