@@ -40,6 +40,9 @@ LOGIN PAGE
 .google-btn{
   width: fit-content; border:none; border-radius:18px; padding:14px; font-size:1rem; font-weight:700; color:#fff;
   background:linear-gradient(90deg,#6cae9e 0%,#8bb7dc 100%); transition:.25s;
+  /* 🌟 เพิ่ม 2 บรรทัดนี้เพื่อไม่ให้ตัวหนังสือตกลงมาเป็น 2 บรรทัด */
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .google-btn:hover{
@@ -504,6 +507,20 @@ ${['AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY'].map(c => getR(c)
 </div>
 </div>
 
+<!-- 🌟 แทรกโค้ดข้อความเตือนตรงนี้ครับ -->
+<div class="mt-3 p-2.5 text-center" style="
+  background: linear-gradient(135deg, #f3fffb 0%, #eef7ff 100%);
+  border: 1px solid #bce3da;
+  border-radius: 18px;
+  color: #49616a;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(108,174,158,0.08);
+">
+  *หากงานใดไม่ปรากฏคะแนนตามกำหนดการของรายวิชา ขอให้นิสิตติดต่ออาจารย์ผู้สอน
+</div>
+
 `;
 
   activateTab(currentTab || '#tabDash');
@@ -568,7 +585,7 @@ const initAuth = (onAuthSuccess,onAuthFailure) => {
 
     if (!email.endsWith('@g.swu.ac.th')) {
       await logout();
-      showLoginError('กรุณาเข้าสู่ระบบด้วยบัญชี @g.swu.ac.th เท่านั้น');
+      showLoginError('กรุณาเข้าสู่ระบบด้วย Email (@g.swu.ac.th) เท่านั้น');
       if (onAuthFailure) onAuthFailure();
       return;
     }
@@ -647,7 +664,7 @@ async function loginGoogle(){
     // ตรวจสอบอีกครั้งก่อนอนุญาตให้ใช้งาน
     if (!email.endsWith('@g.swu.ac.th')) {
       await logout();
-      showLoginError('กรุณาเข้าสู่ระบบด้วยบัญชี @g.swu.ac.th เท่านั้น');
+      showLoginError('กรุณาเข้าสู่ระบบด้วย Email (@g.swu.ac.th) เท่านั้น');
       return;
     }
 
