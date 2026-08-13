@@ -206,8 +206,20 @@ LOGIN ALERT
 <div id="loginView">
   <div id="loginBox" class="login-card">
     <img class="login-logo" src="https://drive.google.com/thumbnail?id=1FPkR-OBIGtQp436UMSE3QNxvG9W3EeQh&sz=w1000" alt="SWU Logo">
-    <div class="login-title" style="font-size:1.5rem;">ระบบแสดงผลคะแนน</div>
-    <div class="login-title" style="font-size:1.8rem;">GE SMART SCORE</div>
+    <!-- 🌟 ส่วนหัวข้อเว็บ (บังคับ 1 บรรทัด + ไม่โดนบีบตัวอักษร) -->
+<div style="flex-shrink: 0;">
+   <h5 class="fw-bold mb-0" style="
+    white-space: nowrap; 
+    font-size: clamp(0.75rem, 3vw, 0.85rem); 
+    line-height: 1.2;
+  ">ระบบแสดงผลคะแนน</h5>
+    <div class="text-muted" style="
+    white-space: nowrap; 
+    font-size: clamp(1rem, 4vw, 1.2rem); 
+    color: #49616a;
+    line-height: 1.2;
+  ">GE Smart Score</div>
+</div>
     <button id="loginBtn" onclick="loginGoogle()" class="google-btn">🔐 Login with @g.swu.ac.th</button>
     <div id="loginError" class="alert alert-warning login-alert"></div>
   </div>
