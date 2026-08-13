@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
-<!-- 🌟 1. ล็อกไม่ให้จอขยาย/ซูมเองเมื่อกดปุ่มหรือสลับแท็บ -->
+<!-- ล็อกหน้าจอ ป้องกันการถ่างซูมบนมือถือ/Touchpad -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GE SMART SCORE</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-:root{
-  --green:#6cae9e; --blue:#8bb7dc; --dark:#49616a;
+:root {
+  --green: #6cae9e; 
+  --blue: #8bb7dc; 
+  --dark: #49616a;
 }
 
-/* 🌟 2. ป้องกัน Touch Gesture ซูมจอ และบังคับขนาดฟอนต์ช่องพิมพ์ */
 html, body {
   font-family: 'Sarabun', sans-serif; 
   background: linear-gradient(135deg, #f3fffb, #eef7ff); 
@@ -42,98 +44,181 @@ input, select, textarea, button {
   background: #edf4f6;
 }
 
-.login-card{
-  width:420px; max-width:90%; background:#f8f8f8; border-radius:28px; padding:40px 35px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.05);
+.login-card {
+  width: 420px; 
+  max-width: 90%; 
+  background: #f8f8f8; 
+  border-radius: 28px; 
+  padding: 40px 35px; 
+  text-align: center; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.login-logo{
-  width:260px; max-width:100%; margin-bottom:25px;
+.login-logo {
+  width: 260px; 
+  max-width: 100%; 
+  margin-bottom: 25px;
 }
 
-.login-title{
-  font-size:2.2rem; font-weight:800; color:#48606a; line-height:1.2; margin-bottom:8px;
+.login-title {
+  font-size: 2.2rem; 
+  font-weight: 800; 
+  color: #48606a; 
+  line-height: 1.2; 
+  margin-bottom: 8px;
 }
 
-.google-btn{
-  width: fit-content; border:none; border-radius:18px; padding:14px; font-size:1rem; font-weight:700; color:#fff;
-  background:linear-gradient(90deg,#6cae9e 0%,#8bb7dc 100%); transition:.25s;
+.google-btn {
+  width: fit-content; 
+  border: none; 
+  border-radius: 18px; 
+  padding: 14px; 
+  font-size: 1rem; 
+  font-weight: 700; 
+  color: #fff;
+  background: linear-gradient(90deg, #6cae9e 0%, #8bb7dc 100%); 
+  transition: .25s;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-.google-btn:hover{
-  transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.12);
+.google-btn:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
 }
 
-#headerUser{
-  display:flex; align-items:center; gap:10px; font-size:0.85rem; line-height:1.2;
+#headerUser {
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  font-size: 0.85rem; 
+  line-height: 1.2;
 }
 
-#headerUser img{
-  width:38px; height:38px; border-radius:50%; object-fit:cover;
+#headerUser img {
+  width: 38px; 
+  height: 38px; 
+  border-radius: 50%; 
+  object-fit: cover;
 }
 
-.user-meta{
-  line-height:1.2;
+.user-meta { line-height: 1.2; }
+
+.student-id {
+  font-size: 0.7rem; 
+  font-weight: 700; 
+  color: #334155;
 }
 
-.student-id{
-  font-size:0.7rem; font-weight:700; color:#334155;
+.header-strip {
+  position: sticky; 
+  top: 0; 
+  z-index: 100; 
+  background: white; 
+  padding: 12px 18px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
 }
 
-.subject-card{
-  width:100%; border:none; border-radius:24px; padding:18px; margin-bottom:12px; font-size:1.2rem; font-weight:800; color:white;
-  background:linear-gradient(135deg,#6cae9e,#8bb7dc); box-shadow:0 8px 20px rgba(108,174,158,0.18); transition:0.2s; cursor:pointer;
+.big-grade {
+  font-size: 3.5rem; 
+  font-weight: 800; 
+  line-height: 1; 
+  background: linear-gradient(135deg, #6cae9e, #8bb7dc); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent;
 }
 
-.header-strip{
-  position:sticky; top:0; z-index:100; background:white; padding:12px 18px; display:flex; align-items:center; justify-content:space-between;
+.status-box {
+  max-width: 420px; 
+  margin: 0 auto 10px; 
+  background: linear-gradient(135deg, #ffffff, #f4fbff); 
+  padding: 12px; 
+  border-radius: 24px;
 }
 
-.big-grade{
-  font-size:3.5rem; font-weight:800; line-height:1; background:linear-gradient(135deg,#6cae9e,#8bb7dc); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+.data-row {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 10px; 
+  padding: 8px 2px; 
+  border-bottom: 1px solid #e2e8f0; 
+  font-size: 0.75rem; 
+  line-height: 1.3;
 }
 
-.status-box{
-  max-width:420px; margin:0 auto 10px; background:linear-gradient(135deg,#ffffff,#f4fbff); padding:12px; border-radius:24px; margin-bottom:10px;
+.data-row span { flex: 4; min-width: 0; word-break: break-word; }
+.data-row b { flex: 0 0 85px; display: block; text-align: center; }
+
+.total-row {
+  background: #eef7ff; 
+  border-radius: 14px; 
+  margin-top: 12px; 
+  border-bottom: none; 
+  min-height: 55px;
 }
 
-.data-row{
-  display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 2px; border-bottom:1px solid #e2e8f0; font-size:0.75rem; line-height:1.3;
+.total-row span, .total-row b { 
+  font-size: 0.75rem !important; 
+  line-height: 1.3 !important; 
 }
 
-.data-row span{ flex:4; min-width:0; word-break:break-word; }
-.data-row b{ flex:0 0 85px; display:block; justify-content:center; align-items:center; text-align:center; }
-
-.total-row{
-  background:#eef7ff; border-radius:14px; margin-top:12px; border-bottom:none; min-height:55px;
+/* 🌟 ขนาดแท็บเล็กลง */
+.nav-pills { background: #eef7ff; padding: 4px; border-radius: 16px; }
+.nav-link { 
+  padding: 3px 6px !important; 
+  border-radius: 12px !important; 
+  font-size: 0.68rem; 
+  font-weight: 700; 
+  color: #567; 
+}
+.nav-pills .nav-link.active { 
+  background: linear-gradient(135deg, #6cae9e, #8bb7dc) !important; 
+  color: white !important; 
 }
 
-.total-row span, .total-row b{ font-size:0.75rem !important; line-height:1.3 !important; }
+.badge-ui { padding: 6px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+#mainContent { display: none; }
 
-.nav-pills{ background:#eef7ff; padding:5px; border-radius:18px; }
-.nav-link{ padding:3px 6px !important; border-radius:14px !important; font-size:0.7rem; font-weight:700; color:#567; }
-.nav-pills .nav-link.active{ background:linear-gradient(135deg,#6cae9e,#8bb7dc) !important; color:white !important; }
-
-.badge-ui{ padding:6px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; }
-#mainContent{ display:none; }
-
+/* 🌟 ขนาดปุ่ม Log out / Refresh เล็กลง */
 .logout-btn {
-  border:none; border-radius:18px; padding:3px 8px; font-size:0.7rem; font-weight:700;
-  background:linear-gradient(135deg,#6cae9e,#8bb7dc); color:white; transition:0.2s;
-  white-space: nowrap; flex-shrink: 0;
+  border: none; 
+  border-radius: 14px; 
+  padding: 3px 8px; 
+  font-size: 0.72rem; 
+  font-weight: 700;
+  background: linear-gradient(135deg, #6cae9e, #8bb7dc); 
+  color: white; 
+  transition: 0.2s;
+  white-space: nowrap; 
+  flex-shrink: 0;
 }
 
-.logout-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(108,174,158,0.24); }
-.spinner-border{ color:#6cae9e !important; }
-
-.login-alert{
-  margin-top:18px; border-radius:16px; font-size:0.8rem; font-weight:600; text-align:left; display:none; animation:fadeIn .25s ease; background:#FFFFFF; border:3px solid #E76F2C; color:#92400E;
+.logout-btn:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 16px rgba(108,174,158,0.24); 
 }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(-8px);}
-  to{opacity:1; transform:translateY(0);}
+.spinner-border { color: #6cae9e !important; }
+
+.login-alert {
+  margin-top: 18px; 
+  border-radius: 16px; 
+  font-size: 0.8rem; 
+  font-weight: 600; 
+  text-align: left; 
+  display: none; 
+  animation: fadeIn .25s ease; 
+  background: #FFFFFF; 
+  border: 3px solid #E76F2C; 
+  color: #92400E;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -145,10 +230,10 @@ input, select, textarea, button {
   <div id="loginBox" class="login-card">
     <img class="login-logo" src="https://drive.google.com/thumbnail?id=1FPkR-OBIGtQp436UMSE3QNxvG9W3EeQh&sz=w1000" alt="SWU Logo">
     
-    <div class="login-title" style="white-space: nowrap; flex-shrink: 0; font-size: clamp(1.6rem, 7vw, 2.5rem);">
+    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2.5rem);">
       ระบบแสดงผลคะแนน
     </div>
-    <div class="login-title" style="white-space: nowrap; flex-shrink: 0; font-size: clamp(1.6rem, 7vw, 2.5rem); margin-bottom: 28px;">
+    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2.5rem); margin-bottom: 28px;">
       GE SMART SCORE
     </div>
 
@@ -160,7 +245,7 @@ input, select, textarea, button {
 <!-- GLOBAL HEADER -->
 <div id="globalHeader" class="header-strip" style="display:none;">
   <div id="headerUser"></div>
-  <div style="display:flex;flex-direction:column;gap:5px;">
+  <div style="display:flex; flex-direction:column; gap:4px;">
     <button class="logout-btn" onclick="handleLogout()">🚪 Log out</button>
     <button class="logout-btn" onclick="refreshCurrentPage()">🔄 Refresh</button>
   </div>
@@ -171,7 +256,6 @@ input, select, textarea, button {
   <div class="container py-2 px-2" style="max-width:480px;">
     <div class="bg-white p-2 rounded-4 shadow-sm">
 
-      <!-- 🌟 3. แก้ไขจุดนี้: ลบแท็ก ${isBtn('#tabDash')} ออก แล้วเปลี่ยนเป็น class="nav-link active" -->
       <ul class="nav nav-pills mb-3">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabDash">Dashboard</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab1">CLO1</button></li>
@@ -185,10 +269,9 @@ input, select, textarea, button {
   </div>
 </div>
 
-<!-- SCRIPT FILES -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- 🌟 4. JS ดักจับและป้องกันการซูมด้วย Ctrl + Scroll / Pinch -->
+<!-- ป้องกัน Ctrl + Scroll Zoom -->
 <script>
 document.addEventListener('wheel', function(e) {
   if (e.ctrlKey) { e.preventDefault(); }
@@ -225,11 +308,8 @@ const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyqBS7A1p-K-qIpVwlt
 
 let isSigningIn = false;
 let cachedAccessToken = null;
-let unsubscribeAuth = null;
-let currentView = 'mainContent';
-let userData = {};
-let scores = {};
 let currentTab = '#tabDash';
+let scores = {};
 let isLoggingIn = false;
 let authReady = false;
 
@@ -242,24 +322,40 @@ document.addEventListener('click', function(e){
 });
 
 function switchView(id){
-  currentView = id;
   document.getElementById('mainContent').style.display = (id === 'mainContent') ? 'block' : 'none';
   document.getElementById('globalHeader').style.display = (id === 'mainContent') ? 'flex' : 'none';
 }
 
 function fmt(val){
   if(val === null || val === undefined || val === "") return "";
-
   let str = val.toString().trim().toLowerCase();
-
   if(str === "true") return '<span style="color:#111827;font-weight:700;">✅ True</span>';
   if(str === "false") return '<span style="color:#111827;font-weight:700;">❌ False</span>';
   if(str === "o") return '<span class="badge-ui badge-o">🏆 O</span>';
   if(str === "s") return '<span class="badge-ui badge-s">✅ S</span>';
   if(str === "u") return '<span class="badge-ui badge-u">❌ U</span>';
   if(str === "upskill") return '<span class="badge-ui badge-upskill">🚀 UpSkill</span>';
-
   return val;
+}
+
+/* 🌟 ฟังก์ชัน Fetch แบบลองใหม่ให้อัตโนมัติ ป้องกันค้างจาก Cold Start */
+async function fetchWithRetry(url, options, retries = 2, backoff = 1000) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000); // ตั้งเวลาถอยทัพ 12 วินาที
+    
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } catch (err) {
+    if (retries > 0) {
+      await new Promise(r => setTimeout(r, backoff));
+      return fetchWithRetry(url, options, retries - 1, backoff * 1.5);
+    }
+    throw err;
+  }
 }
 
 async function loadScore(email){
@@ -268,6 +364,7 @@ async function loadScore(email){
   document.getElementById('scoreContent').innerHTML = `
     <div class="text-center py-5">
       <div class="spinner-border text-success"></div>
+      <div class="mt-2 text-muted small">กำลังดึงข้อมูล...</div>
     </div>
   `;
 
@@ -277,15 +374,11 @@ async function loadScore(email){
 
     const idToken = await user.getIdToken();
 
-    const response = await fetch(GAS_API_URL, {
-      method:'POST',
-      headers:{
-        'Content-Type':'text/plain;charset=utf-8'
-      },
-      body:JSON.stringify({idToken:idToken})
+    const res = await fetchWithRetry(GAS_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ idToken: idToken })
     });
-
-    const res = await response.json();
 
     if(res.success){
       scores = res.allData;
@@ -302,16 +395,14 @@ async function loadScore(email){
       `;
 
       renderScores();
-
     } else {
       showLoginError(res.msg);
-      logout().catch(err => console.error('Sign out error:',err));
+      logout().catch(err => console.error('Sign out error:', err));
     }
 
   } catch (err) {
-    console.error('Fetch error:',err);
-    showLoginError('เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
-    logout().catch(err => console.error('Sign out error:',err));
+    console.error('Fetch error:', err);
+    showLoginError('เชื่อมต่อเซิร์ฟเวอร์ช้าเกินไป กรุณากดปุ่ม Refresh หรือเข้าใหม่อีกครั้ง');
   }
 }
 
@@ -319,30 +410,24 @@ async function handleLogout(){
   try {
     await logout();
     scores = {};
-    userData = {};
     currentTab = '#tabDash';
     document.getElementById('headerUser').innerHTML = '';
     document.getElementById('scoreContent').innerHTML = '';
     showLoggedOutView();
   } catch (err) {
-    console.error('Logout error:',err);
     showLoginError('ออกจากระบบไม่สำเร็จ กรุณารีเฟรชหน้าแล้วลองอีกครั้ง');
   }
 }
 
 function refreshCurrentPage(){
   const user = auth.currentUser;
-  if(user){
-    loadScore(user.email);
-  }
+  if(user) loadScore(user.email);
 }
 
-function getR(c,label=null){
+function getR(c, label=null){
   if(!scores[c]) return "";
-
   const header = (label || scores[c].label || '').toString().trim();
   if(header === "") return "";
-
   return `
     <div class="data-row">
       <span>${header}</span>
@@ -357,14 +442,7 @@ function isTab(tab){
 
 function renderScores(){
   const noticeMsg = `
-    <div class="mt-2 text-start" style="
-      background: #ffffff;
-      color: #ad1457;
-      font-size: 0.78rem;
-      font-weight: 600;
-      line-height: 1.4;
-      padding: 8px 0;
-    ">
+    <div class="mt-2 text-start" style="background:#ffffff; color:#ad1457; font-size:0.78rem; font-weight:600; line-height:1.4; padding:8px 0;">
       *หากงานใดไม่ปรากฏคะแนนตามกำหนดการของรายวิชา <br> ขอให้นิสิตสอบถามอาจารย์ผู้สอน
     </div>
   `;
@@ -375,29 +453,21 @@ function renderScores(){
         <div class="small text-muted" style="font-size:0.8rem;">Grade ${window.subjectCode || ''}</div>
         <div class="big-grade">${scores['CT']?.value || '-'}</div>
       </div>
-
       <div class="status-box">
         <h6 class="fw-bold mb-2">📊 Class Attendance</h6>
-        ${getR('G')}
-        ${getR('I')}
-        ${getR('CH')}
+        ${getR('G')}${getR('I')}${getR('CH')}
       </div>
-
       <div class="status-box">
         <h6 class="fw-bold mb-2">🎯 Grade CLO</h6>
-        ${getR('CO')}
-        ${getR('CP')}
-        ${getR('CQ')}
+        ${getR('CO')}${getR('CP')}${getR('CQ')}
       </div>
     </div>
 
-    <!-- CLO1 -->
     <div class="tab-pane fade ${isTab('#tab1')}" id="tab1">
       <div class="text-center">
         <div class="small text-muted" style="font-size:0.8rem;">Grade CLO1</div>
         <div class="big-grade" style="font-size:3.5rem;">${scores['CO']?.value || '-'}</div>
       </div>
-
       <div class="status-box">
         <h6 class="fw-bold mb-2">📝 Scores</h6>
         ${['J','K','L','M','N','O','P','Q','R','S','T','U'].map(c => getR(c)).join('')}
@@ -409,13 +479,11 @@ function renderScores(){
       ${noticeMsg}
     </div>
 
-    <!-- CLO2 -->
     <div class="tab-pane fade ${isTab('#tab2')}" id="tab2">
       <div class="text-center">
         <div class="small text-muted" style="font-size:0.8rem;">Grade CLO2</div>
         <div class="big-grade" style="font-size:3.5rem;">${scores['CP']?.value || '-'}</div>
       </div>
-
       <div class="status-box">
         <h6 class="fw-bold mb-3">📝 Scores</h6>
         ${['Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ'].map(c => getR(c)).join('')}
@@ -427,13 +495,11 @@ function renderScores(){
       ${noticeMsg}
     </div>
 
-    <!-- CLO3 -->
     <div class="tab-pane fade ${isTab('#tab3')}" id="tab3">
       <div class="text-center">
         <div class="small text-muted" style="font-size:0.8rem;">Grade CLO3</div>
         <div class="big-grade" style="font-size:3.5rem;">${scores['CQ']?.value || '-'}</div>
       </div>
-
       <div class="status-box">
         <h6 class="fw-bold mb-3">📝 Scores</h6>
         ${['AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY'].map(c => getR(c)).join('')}
@@ -450,28 +516,19 @@ function renderScores(){
 }
 
 function activateTab(tabId){
-  document.querySelectorAll('.tab-pane').forEach(el => {
-    el.classList.remove('show','active');
-  });
-
-  document.querySelectorAll('.nav-link').forEach(el => {
-    el.classList.remove('active');
-  });
+  document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('show','active'));
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
 
   const tab = document.querySelector(tabId);
-  if(tab){ tab.classList.add('show','active'); }
+  if(tab) tab.classList.add('show','active');
 
   const btn = document.querySelector(`[data-bs-target="${tabId}"]`);
-  if(btn){ btn.classList.add('active'); }
+  if(btn) btn.classList.add('active');
 }
 
 function showLoginError(message){
   const box = document.getElementById("loginError");
-  box.innerHTML = `
-    <div style="display:flex;gap:10px;align-items:flex-start;">
-      <div style="margin-top:4px;">${message}</div>
-    </div>
-  `;
+  box.innerHTML = `<div style="padding:4px;">${message}</div>`;
   box.style.display = "block";
 }
 
@@ -479,11 +536,10 @@ function hideLoginError(){
   document.getElementById("loginError").style.display="none";
 }
 
-const initAuth = (onAuthSuccess,onAuthFailure) => {
+const initAuth = (onAuthSuccess, onAuthFailure) => {
   return onAuthStateChanged(auth, async user => {
     isSigningIn = false;
     isLoggingIn = false;
-
     if (!user) {
       cachedAccessToken = null;
       if (onAuthFailure) onAuthFailure();
@@ -491,7 +547,6 @@ const initAuth = (onAuthSuccess,onAuthFailure) => {
     }
 
     const email = (user.email || '').trim().toLowerCase();
-
     if (!email.endsWith('@g.swu.ac.th')) {
       await logout();
       showLoginError('กรุณาเข้าสู่ระบบด้วย Email (@g.swu.ac.th) เท่านั้น');
@@ -499,32 +554,21 @@ const initAuth = (onAuthSuccess,onAuthFailure) => {
       return;
     }
 
-    if (onAuthSuccess) {
-      onAuthSuccess(user,cachedAccessToken);
-    }
+    if (onAuthSuccess) onAuthSuccess(user, cachedAccessToken);
   });
 };
 
 const googleSignIn = async () => {
   try {
     isSigningIn = true;
-    const result = await signInWithPopup(auth,provider);
+    const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     cachedAccessToken = credential?.accessToken || null;
-
-    return {
-      user:result.user,
-      accessToken:cachedAccessToken
-    };
-  } catch (error) {
-    console.error('Sign in error:',error);
-    throw error;
+    return { user: result.user, accessToken: cachedAccessToken };
   } finally {
     isSigningIn = false;
   }
 };
-
-const getAccessToken = async () => cachedAccessToken;
 
 const logout = async () => {
   await signOut(auth);
@@ -539,7 +583,6 @@ function showLoggedOutView(){
 
 async function loginGoogle(){
   if (isLoggingIn || isSigningIn) return;
-
   if (!authReady) {
     showLoginError('ระบบเข้าสู่ระบบยังไม่พร้อม กรุณารอสักครู่แล้วลองใหม่');
     return;
@@ -551,25 +594,12 @@ async function loginGoogle(){
   try {
     const result = await googleSignIn();
     const email = (result?.user?.email || '').trim().toLowerCase();
-
     if (!email.endsWith('@g.swu.ac.th')) {
       await logout();
       showLoginError('กรุณาเข้าสู่ระบบด้วย Email (@g.swu.ac.th) เท่านั้น');
-      return;
     }
-
   } catch (err) {
-    if (err.code === 'auth/popup-closed-by-user') {
-      showLoginError('หน้าต่างเข้าสู่ระบบถูกปิด กรุณาลองใหม่');
-    } else if (err.code === 'auth/popup-blocked') {
-      showLoginError('เบราว์เซอร์บล็อก Pop-up กรุณาอนุญาต Pop-up แล้วลองใหม่');
-    } else if (err.code === 'auth/cancelled-popup-request') {
-      showLoginError('มีคำขอเข้าสู่ระบบซ้ำ กรุณารอสักครู่แล้วลองใหม่');
-    } else if (err.code === 'auth/network-request-failed') {
-      showLoginError('ไม่สามารถเชื่อมต่อเครือข่ายได้ กรุณาตรวจสอบอินเทอร์เน็ต');
-    } else {
-      showLoginError(`เข้าสู่ระบบไม่สำเร็จ: ${err.message || err.code || 'Unknown error'}`);
-    }
+    showLoginError('เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
   } finally {
     isLoggingIn = false;
   }
@@ -577,38 +607,24 @@ async function loginGoogle(){
 
 async function initializeAuth(){
   try {
-    await setPersistence(auth,inMemoryPersistence);
-
-    if (auth.currentUser) {
-      await logout();
-    }
-
+    await setPersistence(auth, inMemoryPersistence);
+    if (auth.currentUser) await logout();
     authReady = true;
 
-    unsubscribeAuth = initAuth(
+    initAuth(
       (user) => {
         document.getElementById('loginView').style.display = 'none';
         loadScore(user.email);
       },
-      () => {
-        showLoggedOutView();
-      }
+      () => showLoggedOutView()
     );
-
   } catch (err) {
     authReady = false;
-    console.error('Firebase initialization error:',err);
-    showLoginError(`ไม่สามารถเริ่มระบบเข้าสู่ระบบได้: ${err.message || err.code || 'Unknown error'}`);
+    showLoginError(`เกิดข้อผิดพลาดในการเริ่มระบบ: ${err.message}`);
   }
 }
 
-Object.assign(window,{
-  loginGoogle,
-  handleLogout,
-  refreshCurrentPage,
-  getAccessToken
-});
-
+Object.assign(window, { loginGoogle, handleLogout, refreshCurrentPage });
 initializeAuth();
 </script>
 </body>
