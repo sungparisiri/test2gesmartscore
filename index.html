@@ -187,7 +187,7 @@ input, select, textarea, button {
   border: none; 
   border-radius: 14px; 
   padding: 2px 7px; 
-  font-size: 0.6rem; 
+  font-size: 0.4rem; 
   font-weight: 700;
   background: linear-gradient(135deg, #6cae9e, #8bb7dc); 
   color: white; 
@@ -230,10 +230,10 @@ input, select, textarea, button {
   <div id="loginBox" class="login-card">
     <img class="login-logo" src="https://drive.google.com/thumbnail?id=1FPkR-OBIGtQp436UMSE3QNxvG9W3EeQh&sz=w1000" alt="SWU Logo">
     
-    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2.5rem);">
+    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2rem);">
       ระบบแสดงผลคะแนน
     </div>
-    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2.5rem); margin-bottom: 28px;">
+    <div class="login-title" style="white-space: nowrap; font-size: clamp(1.6rem, 7vw, 2rem); margin-bottom: 28px;">
       GE SMART SCORE
     </div>
 
@@ -247,7 +247,6 @@ input, select, textarea, button {
   <div id="headerUser"></div>
   <div style="display:flex; flex-direction:column; gap:4px;">
     <button class="logout-btn" onclick="handleLogout()">🚪 Log out</button>
-    <button class="logout-btn" onclick="refreshCurrentPage()">🔄 Refresh</button>
   </div>
 </div>
 
@@ -443,7 +442,7 @@ function isTab(tab){
 function renderScores(){
   const noticeMsg = `
     <div class="mt-2 text-start" style="background:#ffffff; color:#ad1457; font-size:0.78rem; font-weight:600; line-height:1.4; padding:8px 0;">
-      *หากงานใดไม่ปรากฏคะแนนตามกำหนดการของรายวิชา <br> ขอให้นิสิตสอบถามอาจารย์ผู้สอน
+      *หากงานใดไม่ปรากฏคะแนนตามกำหนดการของรายวิชา ขอให้นิสิตสอบถามอาจารย์ผู้สอน
     </div>
   `;
 
